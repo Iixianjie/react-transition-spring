@@ -1,13 +1,28 @@
+.wrap {
+  border: 1px dashed #ccc;
+  border-radius: 2px;
+  padding: 40px 24px;
+  overflow: hidden;
+}
+
 .box {
   width: 100px;
   height: 100px;
-  border: 1px solid red;
+  text-align: center;
+  line-height: 100px;
+  background-color: pink;
+  display: inline-block;
+  border-radius: 2px;
+}
+
+.box + .box {
+  margin-left: 12px;
 }
 
 .button-wrap {
   height: 50px;
 }
 
-.wrap {
-  padding: 40px;
+.blank {
+  height: 400px;
 }

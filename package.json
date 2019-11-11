@@ -1,6 +1,6 @@
 {
   "name": "@lxjx/react-transition-spring",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "react-spring based animation component",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -8,32 +8,29 @@
     "name": "lixianjie",
     "email": "1073830130@qq.com"
   },
-  "repository": "https://github.com/Iixianjie/r2",
+  "repository": "https://github.com/Iixianjie/react-transition-spring",
   "scripts": {
     "dev": "father doc dev",
+    "build:doc": "father doc build",
     "build": "father build"
   },
   "peerDependencies": {
-    "@babel/runtim": "^7.7.2",
     "react": ">= 16.8.0",
-    "react-dom": ">= 16.8.0",
-    "@lxjx/hooks": ">= 0.2.0",
-    "prop-types": "^15.7.2",
-    "react-spring": "^8.0.0"
+    "react-dom": ">= 16.8.0"
   },
   "devDependencies": {
+    "docz": "^1.3.2",
     "father": "^2.16.0",
     "typescript": "^3.3.3",
-    "utility-types": "^3.10.0",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
-    "@lxjx/hooks": "^0.2.0",
-    "react-spring": "^8.0.27"
-
+    "utility-types": "^3.10.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.7.2",
-    "prop-types": "^15.7.2"
+    "@lxjx/hooks": "^0.2.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-spring": "^8.0.27"
   },
   "license": "MIT"
 }

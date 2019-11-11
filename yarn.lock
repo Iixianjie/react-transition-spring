@@ -7443,7 +7443,7 @@ docz@1.2.0:
     ulid "^2.3.0"
     yargs "^13.2.2"
 
-docz@^1.0.4:
+docz@^1.0.4, docz@^1.3.2:
   version "1.3.2"
   resolved "https://registry.npm.taobao.org/docz/download/docz-1.3.2.tgz#b1b76658abcbf76a5fc9303a3ecf64e84355a015"
   integrity sha1-sbdmWKvL92pfyTA6Ps9k6ENVoBU=

@@ -1,11 +1,287 @@
 ---
-name: Home
+name: 包教不会
 route: /
 order: -1
 sidebar: true
 ---
 
-import Demo from './demo/demo1.tsx';
+import Base from './demo/base.tsx';
+import Demo1 from './demo/demo1.tsx';
+import StateComponent from './demo/state-component.tsx'
+import { Transition, TransitionBase } from '../src/index.ts';
+import { Playground, Props } from 'docz';
+import './demo/style.css';
 
-<Demo />
+## Introduction
+react-transition-spring 是基于 react-spring 的一套封装组件，API类似于 react-transition-group，
+目的是对 react-spring 一些常见场景的使用进行简化以及对unmountOnExit、mountOnEnter等实用API提供开箱式的支持。
 
+提供基础组件 TransitionBase 以及基于 TransitionBase 的上层组件 Transition, 内置了一些非常常见的开关动画效果，
+你也可以基于TransitionBase实现自己的动画组件，查看[transition.tsx](https://github.com/Iixianjie/react-transition-spring/blob/master/src/transition.tsx)
+组件有助于你了解如何使用它。
+
+----
+
+## 安装
+```shell
+yarn add @lxjx/react-transition-spring
+```
+
+或
+```shell
+npm install @lxjx/react-transition-spring
+```
+
+然后引入来使用它们
+```js
+import { TransitionBase, Transition } from '@lxjx/react-transition-spring';
+```
+
+react-transition-spring 原样导出了所有 react-spring 接口，你可以在需要时导入它们并使用
+```js
+import { useSpring, config } from '@lxjx/react-transition-spring';
+```
+
+----
+
+## 基本使用
+
+<Base />
+
+```tsx
+import React from 'react';
+
+import { Transition } from '@lxjx/react-transition-spring';
+
+const Base: React.FC = () => {
+  const [toggle, setToggle] = React.useState(false);
+
+  return (
+    <div className="wrap">
+      <div className="button-wrap">
+        <button
+          type="button"
+          onClick={() => {
+            setToggle(prev => !prev);
+          }}
+        >toggle</button>
+      </div>
+      <Transition toggle={toggle} type="fade" className="box">
+        fade
+      </Transition>
+      <Transition toggle={toggle} type="zoom" className="box">
+        zoom
+      </Transition>
+      <Transition toggle={toggle} type="punch" className="box">
+        punch
+      </Transition>
+      <Transition toggle={toggle} type="bounce" className="box">
+        bounce
+      </Transition>
+      <Transition toggle={toggle} type="slideLeft" className="box">
+        slideLeft
+      </Transition>
+      <Transition toggle={toggle} type="slideRight" className="box">
+        slideRight
+      </Transition>
+      <Transition toggle={toggle} type="slideTop" className="box">
+        slideTop
+      </Transition>
+      <Transition toggle={toggle} type="slideBottom" className="box">
+        slideBottom
+      </Transition>
+    </div>
+  );
+};
+```
+
+----
+
+## Transition
+
+如上面的示例所示，Transition组件内置了一些常用的开关动画，你可以根据上面的例子在下方演练它们。
+
+<Playground>
+  <StateComponent>{(toggle) => (
+    <Transition toggle={toggle} type="slideRight" className="box">
+      Transition
+    </Transition>
+  )}</StateComponent>
+</Playground>
+
+### props
+```ts
+type TransitionTypes =
+  | 'fade'
+  | 'zoom'
+  | 'punch'
+  | 'slideLeft'
+  | 'slideRight'
+  | 'slideTop'
+  | 'slideBottom'
+  | 'bounce';
+
+type TransitionProps = {
+  /** 动画类型 */
+  type: TransitionTypes;
+
+  /** 默认会为所有类型的过渡附加fade过渡，如果需要禁用，为此项传递false */
+  alpha?: boolean;
+
+  /** 开关动画 */
+  toggle?: boolean;
+
+  /** 初次加载时是否触发动画, 默认为true */
+  appear?: boolean;
+
+  /** 包裹元素的tag类型，默认为div, 必须是合法的html元素类型(注意当为span等内联元素时transform不会生效，需要手动切换为块类型) */
+  tag?: string;
+
+  /** 动画开始前的延迟时间 */
+  delay?: number;
+
+  /** spring动画配置 */
+  config?: SpringBaseProps['config'];
+
+  /** 所有动画结束后, 接收动画结束后的动画值 */
+  onRest?: (transitionArg: any) => void;
+
+  /** 动画开始 */
+  onStart?: () => void;
+
+  /** 默认情况下动画结束后组件依然会保持挂载，设置此属性在过渡结束后会卸载组件，默认为false */
+  unmountOnExit?: boolean;
+
+  /** 初次渲染时，组件默认会以from状态先加载，为true时，只有在初次触发动画时才会加载组件，默认为false */
+  mountOnEnter?: boolean;
+
+  /** 包裹组件的类名 */
+  className?: string;
+
+  /** 包裹组件样式 */
+  style?: React.CSSProperties;
+};
+```
+
+----
+
+## TransitionBase
+
+TransitionBase 作为 Transition 的底层组件，提供了更原始的能力，也让你能够更加定制化的配置动画效果或通过它包装出上层组件。
+
+### 示例
+
+<Demo1 />
+
+```tsx
+const Demo1: React.FC = () => {
+  const [toggle, setToggle] = React.useState(false);
+
+  return (
+    <div className="wrap">
+      <div className="button-wrap">
+        <button
+          type="button"
+          onClick={() => {
+            setToggle(prev => !prev);
+          }}
+        >toggle</button>
+      </div>
+      <TransitionBase
+        toggle={toggle}
+        className="box"
+        to={{ transform: 'translate3d(-100%, 0, 0)' }}
+        from={{ transform: 'translate3d(0%, 0, 0)' }}
+      >
+        slideLeft
+      </TransitionBase>
+      <TransitionBase
+        toggle={toggle}
+        className="box"
+        to={{ transform: 'scale(0)' }}
+        from={{ transform: 'scale(1)' }}
+      >
+        zoom
+      </TransitionBase>
+      <TransitionBase
+        toggle={toggle}
+        className="box"
+        to={{ number: 0 }}
+        from={{ number: 100000 }}
+      >
+        {({ number: number }: any) => number.interpolate((n: any) => n.toFixed(2))}
+      </TransitionBase>
+    </div>
+  );
+};
+```
+
+----
+
+### 演练区域
+
+你可以尝试更改下面的代码来进行试验
+
+<Playground>
+  <StateComponent>{(toggle) => (
+    <TransitionBase
+      toggle={toggle}
+      className="box"
+      to={{ number: 0 }}
+      from={{ number: 100000 }}
+    >
+      {({ number }) => number.interpolate((n) => n.toFixed(2))}
+    </TransitionBase>
+  )}</StateComponent>
+</Playground>
+
+
+### props
+```ts
+  /** 动画的enter -> leave 状态 */
+  to: any;
+
+  /** 动画的leave -> enter 状态 */
+  from: any;
+
+  /** 用于插值动画，在动画属性传递给动画元素前会将即将用于动画的style和当前的toggle状态传入并返回新的动画对象 */
+  interpolater?: (props: any, toggle: boolean) => any;
+
+  /** 根据toggle改变元素的visibility属性, 用于对不想卸载掉的元素进行可见性隐藏 */
+  changeVisible?: boolean;
+
+  /** 开关动画 */
+  toggle?: boolean;
+
+  /** 初次加载时是否触发动画, 默认为true */
+  appear?: boolean;
+
+  /** 包裹元素的tag类型，默认为div, 必须是合法的html元素类型(注意当为span等内联元素时transform不会生效，需要手动切换为块类型) */
+  tag?: string;
+
+  /** 动画开始前的延迟时间 */
+  delay?: number;
+
+  /** spring动画配置 */
+  config?: SpringBaseProps['config'];
+
+  /** 所有动画结束后, 接收动画结束后的动画值 */
+  onRest?: (transitionArg: any) => void;
+
+  /** 动画开始 */
+  onStart?: () => void;
+
+  /** 默认情况下动画结束后组件依然会保持挂载，设置此属性在过渡结束后会卸载组件，默认为false */
+  unmountOnExit?: boolean;
+
+  /** 初次渲染时，组件默认会以from状态先加载，为true时，只有在初次触发动画时才会加载组件，默认为false */
+  mountOnEnter?: boolean;
+
+  /** 包裹组件的类名 */
+  className?: string;
+
+  /** 包裹组件样式 */
+  style?: React.CSSProperties;
+```
+
+<div className="blank" />

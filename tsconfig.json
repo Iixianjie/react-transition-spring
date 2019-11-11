@@ -13,5 +13,11 @@
       "@/*": ["src/*"]
     },
     "allowSyntheticDefaultImports": true
-  }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "docs/demo/**/*"
+  ]
 }
