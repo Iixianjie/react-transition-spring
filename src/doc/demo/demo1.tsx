@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TransitionBase } from '../../src';
+import { TransitionBase } from '@lxjx/react-transition-spring';
 
 const Demo1: React.FC = () => {
   const [toggle, setToggle] = React.useState(false);

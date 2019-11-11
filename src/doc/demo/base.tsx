@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { TransitionBase, Transition } from '../../src';
+import { TransitionBase, Transition } from '@lxjx/react-transition-spring';
 import { doc } from 'father';
 
 const Base: React.FC = () => {

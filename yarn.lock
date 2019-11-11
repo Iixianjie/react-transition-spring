@@ -1995,6 +1995,18 @@
     react "*"
     utility-types "*"
 
+"@lxjx/react-transition-spring@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@lxjx/react-transition-spring/-/react-transition-spring-1.0.0.tgz#3a578002bdb4e500349b2afed596fe0299014227"
+  integrity sha512-bZnAWPphxQUPyOLXvi4/7woj04N8mo0p3rwRdL74N1COjFeqmoy1V2hxWhIkm290xihXXGO0OrAHitHLGSXMtg==
+  dependencies:
+    "@babel/runtime" "^7.7.2"
+    "@lxjx/hooks" "^0.2.0"
+    prop-types "^15.7.2"
+    react "^16.11.0"
+    react-dom "^16.11.0"
+    react-spring "^8.0.27"
+
 "@mdx-js/loader@^0.16.6":
   version "0.16.8"
   resolved "https://registry.npm.taobao.org/@mdx-js/loader/download/@mdx-js/loader-0.16.8.tgz#649f399e254f40213d2e710e79ed769eeadcca1b"

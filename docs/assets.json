@@ -1,8 +1,8 @@
 {
-  "vendors.css": "/static/css/vendors.89d63729807ed4f3e3ce.css",
-  "vendors.js": "/static/js/vendors.f5fc6418.js",
-  "app.js": "/static/js/app.89d63729807ed4f3e3ce.js",
-  "doc-index.css": "/static/css/doc-index.89d63729807ed4f3e3ce.css",
-  "doc-index.js": "/static/js/doc-index.aab260f1.js",
-  "index.html": "/index.html"
+  "vendors.css": "/react-transition-spring/static/css/vendors.a36bfba74e55b252ce2d.css",
+  "vendors.js": "/react-transition-spring/static/js/vendors.e938fd38.js",
+  "app.js": "/react-transition-spring/static/js/app.a36bfba74e55b252ce2d.js",
+  "src-doc-index.css": "/react-transition-spring/static/css/src-doc-index.a36bfba74e55b252ce2d.css",
+  "src-doc-index.js": "/react-transition-spring/static/js/src-doc-index.eb2b64c4.js",
+  "index.html": "/react-transition-spring/index.html"
 }
