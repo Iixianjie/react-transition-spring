@@ -199,6 +199,7 @@ var TransitionBase = function TransitionBase(_ref) {
     return {
       from: from,
       config: config,
+      reset: true,
       onStart: function onStart() {
         _onStart && _onStart();
       },
@@ -235,6 +236,7 @@ var TransitionBase = function TransitionBase(_ref) {
       set({
         // @ts-ignore
         to: to,
+        from: from,
         delay: delay,
 
         /* 根据appear和self.count判断是否是初次渲染并决定是否启用动画 */
@@ -244,6 +246,7 @@ var TransitionBase = function TransitionBase(_ref) {
       // @ts-ignore
       set({
         to: from,
+        from: to,
         immediate: false,
         delay: delay
       });

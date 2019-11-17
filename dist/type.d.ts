@@ -1,6 +1,4 @@
-import React from 'react';
 import { SpringBaseProps } from 'react-spring';
-import { Assign } from 'utility-types';
 interface Base {
     /** 开关动画 */
     toggle?: boolean;
@@ -22,8 +20,6 @@ interface Base {
     mountOnEnter?: boolean;
     /** 包裹组件的类名 */
     className?: string;
-    /** 包裹组件样式 */
-    style?: React.CSSProperties;
 }
 interface TransitionBaseExt {
     /** 动画的enter -> leave 状态 */
@@ -36,13 +32,13 @@ interface TransitionBaseExt {
     changeVisible?: boolean;
     [key: string]: any;
 }
-export declare type TransitionBaseProps = Assign<Base, TransitionBaseExt>;
+export declare type TransitionBaseProps = Base & TransitionBaseExt;
 export declare type TransitionTypes = 'fade' | 'zoom' | 'punch' | 'slideLeft' | 'slideRight' | 'slideTop' | 'slideBottom' | 'bounce';
-export declare type TransitionProps = Assign<Base, {
+export declare type TransitionProps = Base & {
     /** 动画类型 */
     type: TransitionTypes;
     /** 默认会为所有类型的过渡附加fade过渡，如果需要禁用，为此项传递false */
     alpha?: boolean;
     [key: string]: any;
-}>;
+};
 export {};
