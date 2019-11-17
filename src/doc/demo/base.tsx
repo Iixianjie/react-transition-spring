@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { TransitionBase, Transition } from '@lxjx/react-transition-spring';
-import { doc } from 'father';
+import { TransitionBase, Transition } from '../../index';
 
 const Base: React.FC = () => {
   const [toggle, setToggle] = React.useState(false);
@@ -19,7 +18,7 @@ const Base: React.FC = () => {
       <Transition toggle={toggle} type="fade" className="box">
         fade
       </Transition>
-      <Transition toggle={toggle} type="zoom" className="box">
+      <Transition toggle={toggle} type="zoom" className="box" >
         zoom
       </Transition>
       <Transition toggle={toggle} type="punch" className="box">

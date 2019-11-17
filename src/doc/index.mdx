@@ -8,9 +8,11 @@ sidebar: true
 import Base from './demo/base.tsx';
 import Demo1 from './demo/demo1.tsx';
 import StateComponent from './demo/state-component.tsx'
-import { Transition, TransitionBase } from '@lxjx/react-transition-spring';
+import ChangeType from './demo/change-type.tsx'
+import { Transition, TransitionBase } from '../index.ts';
 import { Playground, Props } from 'docz';
 import './demo/style.css';
+
 
 ## Introduction
 react-transition-spring 是基于 react-spring 的一套封装组件，API类似于 react-transition-group，
@@ -19,6 +21,10 @@ react-transition-spring 是基于 react-spring 的一套封装组件，API类似
 提供基础组件 TransitionBase 以及基于 TransitionBase 的上层组件 Transition, 内置了一些非常常见的开关动画效果，
 你也可以基于TransitionBase实现自己的动画组件，查看[transition.tsx](https://github.com/Iixianjie/react-transition-spring/blob/master/src/transition.tsx)
 组件有助于你了解如何使用它。
+
+----
+
+<ChangeType />
 
 ----
 
