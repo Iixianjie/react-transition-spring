@@ -1,6 +1,6 @@
 {
   "name": "@lxjx/react-transition-spring",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "react-spring based animation component",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
