@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
-declare const defaultProps: Readonly<{
+declare const defaultProps: {
     mountOnEnter: boolean;
     unmountOnExit: boolean;
     changeVisible: boolean;
     tag: string;
     appear: boolean;
-}>;
-declare const propsTypes: Readonly<{
+};
+declare const propsTypes: {
     mountOnEnter: PropTypes.Requireable<boolean>;
     unmountOnExit: PropTypes.Requireable<boolean>;
     tag: PropTypes.Requireable<string>;
@@ -19,5 +19,5 @@ declare const propsTypes: Readonly<{
     changeVisible: PropTypes.Requireable<boolean>;
     className: PropTypes.Requireable<string>;
     style: PropTypes.Requireable<object>;
-}>;
+};
 export { defaultProps, propsTypes, };

@@ -7,14 +7,14 @@ export * from 'react-spring';
 import _slicedToArray from '@babel/runtime/helpers/esm/slicedToArray';
 import { useSelf } from '@lxjx/hooks';
 
-var defaultProps = Object.freeze({
+var defaultProps = {
   mountOnEnter: false,
   unmountOnExit: false,
   changeVisible: false,
   tag: 'div',
   appear: true
-});
-var propsTypes = Object.freeze({
+};
+var propsTypes = {
   mountOnEnter: PropTypes.bool,
   unmountOnExit: PropTypes.bool,
   tag: PropTypes.string,
@@ -27,7 +27,7 @@ var propsTypes = Object.freeze({
   changeVisible: PropTypes.bool,
   className: PropTypes.string,
   style: PropTypes.object
-});
+};
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 

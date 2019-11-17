@@ -137,14 +137,14 @@ function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance");
 }
 
-var defaultProps = Object.freeze({
+var defaultProps = {
   mountOnEnter: false,
   unmountOnExit: false,
   changeVisible: false,
   tag: 'div',
   appear: true
-});
-var propsTypes = Object.freeze({
+};
+var propsTypes = {
   mountOnEnter: PropTypes.bool,
   unmountOnExit: PropTypes.bool,
   tag: PropTypes.string,
@@ -157,7 +157,7 @@ var propsTypes = Object.freeze({
   changeVisible: PropTypes.bool,
   className: PropTypes.string,
   style: PropTypes.object
-});
+};
 
 var TransitionBase = function TransitionBase(_ref) {
   var toggle = _ref.toggle,
