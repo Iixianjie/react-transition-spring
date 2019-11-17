@@ -184,7 +184,7 @@ var transitionConfigs = {
   },
   zoom: {
     from: {
-      transform: 'scale3d(0, 0, 0)'
+      transform: 'scale3d(0.5, 0.5, 0.5)'
     },
     to: {
       transform: 'scale3d(1, 1, 1)'
