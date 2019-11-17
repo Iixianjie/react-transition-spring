@@ -8713,10 +8713,10 @@ father-build@1.14.1:
     vinyl-fs "3.0.3"
     yargs-parser "13.1.1"
 
-father@^2.16.0:
+father@^2.24.1:
   version "2.24.1"
-  resolved "https://registry.npm.taobao.org/father/download/father-2.24.1.tgz#873a9fc07103f715cba616e27ace52a49f61b693"
-  integrity sha1-hzqfwHED9xXLphbies5SpJ9htpM=
+  resolved "https://registry.npmjs.org/father/-/father-2.24.1.tgz#873a9fc07103f715cba616e27ace52a49f61b693"
+  integrity sha512-bUl69MkgEjoq7DBS/Ah1wEcRzqQt7PEbkGG7sCG2Tn2hKpqHdnu7ETMyL5QIda8NqcCir9efpDoBFg7Pl1TWPw==
   dependencies:
     "@babel/plugin-proposal-decorators" "7.4.4"
     "@storybook/addon-a11y" "^4.1.3"
