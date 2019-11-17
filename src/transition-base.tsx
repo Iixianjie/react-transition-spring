@@ -83,7 +83,7 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
   /* 存在插值器则先走插值器 */
   const springProps = interpolater ? interpolater(springStyle, !!toggle) : springStyle;
   /* 隐藏 */
-  const visibleStyle = changeVisible ? { visibility: visibility ? 'visible' : 'hidden' } : {};
+  const visibleStyle = changeVisible ? { display: visibility ? '' : 'none' } : {};
 
   return (
     (mount)

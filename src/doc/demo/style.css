@@ -5,6 +5,13 @@
   overflow: hidden;
 }
 
+.box-warp {
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  vertical-align: top;
+}
+
 .box {
   width: 100px;
   height: 100px;

@@ -15,30 +15,46 @@ const Base: React.FC = () => {
           }}
         >toggle</button>
       </div>
-      <Transition toggle={toggle} type="fade" className="box">
-        fade
-      </Transition>
-      <Transition toggle={toggle} type="zoom" className="box" >
-        zoom
-      </Transition>
-      <Transition toggle={toggle} type="punch" className="box">
-        punch
-      </Transition>
-      <Transition toggle={toggle} type="bounce" className="box">
-        bounce
-      </Transition>
-      <Transition toggle={toggle} type="slideLeft" className="box">
-        slideLeft
-      </Transition>
-      <Transition toggle={toggle} type="slideRight" className="box">
-        slideRight
-      </Transition>
-      <Transition toggle={toggle} type="slideTop" className="box">
-        slideTop
-      </Transition>
-      <Transition toggle={toggle} type="slideBottom" className="box">
-        slideBottom
-      </Transition>
+      <div className="box-warp">
+        <Transition toggle={toggle} type="fade" className="box">
+          fade
+        </Transition>
+      </div>
+      <div className="box-warp">
+        <Transition toggle={toggle} type="zoom" className="box" >
+          zoom
+        </Transition>
+      </div>
+      <div className="box-warp">
+        <Transition toggle={toggle} type="punch" className="box">
+          punch
+        </Transition>
+      </div>
+      <div className="box-warp">
+        <Transition toggle={toggle} type="bounce" className="box">
+          bounce
+        </Transition>
+      </div>
+      <div className="box-warp">
+        <Transition toggle={toggle} type="slideLeft" className="box">
+          slideLeft
+        </Transition>
+      </div>
+      <div className="box-warp">
+        <Transition toggle={toggle} type="slideRight" className="box">
+          slideRight
+        </Transition>
+      </div>
+      <div className="box-warp">
+        <Transition toggle={toggle} type="slideTop" className="box">
+          slideTop
+        </Transition>
+      </div>
+      <div className="box-warp">
+        <Transition toggle={toggle} type="slideBottom" className="box">
+          slideBottom
+        </Transition>
+      </div>
     </div>
   );
 };
