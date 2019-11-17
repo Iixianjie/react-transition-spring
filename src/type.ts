@@ -1,6 +1,5 @@
 import React from 'react';
 import { SpringBaseProps } from 'react-spring';
-import { Assign } from 'utility-types';
 
 interface Base {
   /** 开关动画 */
@@ -24,7 +23,7 @@ interface Base {
   /** 包裹组件的类名 */
   className?: string;
   /** 包裹组件样式 */
-  style?: React.CSSProperties;
+  // style?: React.CSSProperties;
 }
 
 interface TransitionBaseExt {
@@ -40,7 +39,8 @@ interface TransitionBaseExt {
 }
 
 /* 基础动画组件的类型 */
-export type TransitionBaseProps = Assign<Base, TransitionBaseExt>;
+// export type TransitionBaseProps = Assign<Base, TransitionBaseExt>;
+export type TransitionBaseProps = Base & TransitionBaseExt;
 
 export type TransitionTypes =
   | 'fade'
@@ -53,10 +53,10 @@ export type TransitionTypes =
   | 'bounce';
 
 /* 预置组件的类型 */
-export type TransitionProps = Assign<Base, {
+export type TransitionProps = Base & {
   /** 动画类型 */
   type: TransitionTypes;
   /** 默认会为所有类型的过渡附加fade过渡，如果需要禁用，为此项传递false */
   alpha?: boolean;
   [key: string]: any;
-}>;
+};

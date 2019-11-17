@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 
-const defaultProps = Object.freeze({
+const defaultProps = {
   mountOnEnter: false,
   unmountOnExit: false,
   changeVisible: false,
   tag: 'div',
   appear: true,
-});
+};
 
-const propsTypes = Object.freeze({
+const propsTypes = {
   mountOnEnter: PropTypes.bool,
   unmountOnExit: PropTypes.bool,
   tag: PropTypes.string,
@@ -21,7 +21,7 @@ const propsTypes = Object.freeze({
   changeVisible: PropTypes.bool,
   className: PropTypes.string,
   style: PropTypes.object,
-});
+};
 
 export {
   defaultProps,

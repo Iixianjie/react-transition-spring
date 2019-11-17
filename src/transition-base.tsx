@@ -25,6 +25,7 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
   const [springStyle, set] = useSpring(() => ({
     from,
     config,
+    reset: true,
     onStart() {
       onStart && onStart();
     },
@@ -48,18 +49,18 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
   /* toggle或动画配置变更，更新动画状态 */
   useEffect(() => {
     const isFirst = self.count === 0;
-
     if (toggle) {
       set({
         // @ts-ignore
         to,
+        from,
         delay,
         /* 根据appear和self.count判断是否是初次渲染并决定是否启用动画 */
         immediate: appear ? false : isFirst,
       });
     } else {
       // @ts-ignore
-      set({ to: from, immediate: false, delay });
+      set({ to: from, from: to, immediate: false, delay });
     }
     self.count++; // 标记元素动画次数
     // eslint-disable-next-line
