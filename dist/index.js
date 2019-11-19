@@ -275,7 +275,7 @@ var TransitionBase = function TransitionBase(_ref) {
   /* 隐藏 */
 
   var visibleStyle = changeVisible ? {
-    visibility: visibility ? 'visible' : 'hidden'
+    display: visibility ? '' : 'none'
   } : {};
   return mount ? React__default.createElement(AnimatedEl, Object.assign({}, props, {
     style: _objectSpread2({}, style, {}, springProps, {}, visibleStyle)
