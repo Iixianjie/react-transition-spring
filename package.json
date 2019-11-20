@@ -1,9 +1,10 @@
 {
   "name": "@lxjx/react-transition-spring",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "react-spring based animation component",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
+  "typings": "./dist",
   "authors": {
     "name": "lixianjie",
     "email": "1073830130@qq.com"
