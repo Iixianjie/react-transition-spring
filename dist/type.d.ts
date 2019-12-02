@@ -1,3 +1,4 @@
+import React from 'react';
 import { SpringBaseProps } from 'react-spring';
 interface Base {
     /** 开关动画 */
@@ -20,6 +21,10 @@ interface Base {
     mountOnEnter?: boolean;
     /** 包裹组件的类名 */
     className?: string;
+    /** 包裹组件样式 */
+    style?: React.CSSProperties;
+    /** 是否开启react-spring的reset */
+    reset?: boolean;
 }
 interface TransitionBaseExt {
     /** 动画的enter -> leave 状态 */

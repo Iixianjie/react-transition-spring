@@ -23,7 +23,9 @@ interface Base {
   /** 包裹组件的类名 */
   className?: string;
   /** 包裹组件样式 */
-  // style?: React.CSSProperties;
+  style?: React.CSSProperties;
+  /** 是否开启react-spring的reset */
+  reset?: boolean;
 }
 
 interface TransitionBaseExt {

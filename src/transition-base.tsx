@@ -9,7 +9,7 @@ import { defaultProps, propsTypes } from './prop-types';
 
 const TransitionBase: React.FC<TransitionBaseProps> = ({
    toggle, from, to, children, tag, appear, config, delay,
-   mountOnEnter, unmountOnExit, changeVisible, style, interpolater, onStart, onRest, ...props
+   mountOnEnter, unmountOnExit, changeVisible, style, interpolater, onStart, onRest, reset = false, ...props
  }) => {
   const self = useSelf({
     toggle,
@@ -25,7 +25,7 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
   const [springStyle, set] = useSpring(() => ({
     from,
     config,
-    reset: true,
+    reset,
     onStart() {
       onStart && onStart();
     },

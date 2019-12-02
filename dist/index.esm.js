@@ -49,7 +49,9 @@ var TransitionBase = function TransitionBase(_ref) {
       interpolater = _ref.interpolater,
       _onStart = _ref.onStart,
       _onRest = _ref.onRest,
-      props = _objectWithoutProperties(_ref, ["toggle", "from", "to", "children", "tag", "appear", "config", "delay", "mountOnEnter", "unmountOnExit", "changeVisible", "style", "interpolater", "onStart", "onRest"]);
+      _ref$reset = _ref.reset,
+      reset = _ref$reset === void 0 ? false : _ref$reset,
+      props = _objectWithoutProperties(_ref, ["toggle", "from", "to", "children", "tag", "appear", "config", "delay", "mountOnEnter", "unmountOnExit", "changeVisible", "style", "interpolater", "onStart", "onRest", "reset"]);
 
   var self = useSelf({
     toggle: toggle,
@@ -73,7 +75,7 @@ var TransitionBase = function TransitionBase(_ref) {
     return {
       from: from,
       config: config,
-      reset: true,
+      reset: reset,
       onStart: function onStart() {
         _onStart && _onStart();
       },
