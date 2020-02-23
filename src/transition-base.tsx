@@ -8,8 +8,23 @@ import { TransitionBaseProps } from './type';
 import { defaultProps, propsTypes } from './prop-types';
 
 const TransitionBase: React.FC<TransitionBaseProps> = ({
-   toggle, from, to, children, tag, appear, config, delay,
-   mountOnEnter, unmountOnExit, changeVisible, style, interpolater, onStart, onRest, reset = false, ...props
+   toggle,
+   from,
+   to,
+   children,
+   tag,
+   appear,
+   config,
+   delay,
+   mountOnEnter,
+   unmountOnExit,
+   changeVisible,
+   style,
+   interpolater,
+   onStart,
+   onRest,
+   reset = false,
+   ...props
  }) => {
   const self = useSelf({
     toggle,
