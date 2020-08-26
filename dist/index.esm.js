@@ -1,33 +1,10 @@
 import _objectWithoutProperties from '@babel/runtime/helpers/esm/objectWithoutProperties';
 import _defineProperty from '@babel/runtime/helpers/esm/defineProperty';
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { useSpring, animated, config } from 'react-spring';
 export * from 'react-spring';
 import _slicedToArray from '@babel/runtime/helpers/esm/slicedToArray';
 import { useSelf } from '@lxjx/hooks';
-
-var defaultProps = {
-  mountOnEnter: false,
-  unmountOnExit: false,
-  changeVisible: false,
-  tag: 'div',
-  appear: true
-};
-var propsTypes = {
-  mountOnEnter: PropTypes.bool,
-  unmountOnExit: PropTypes.bool,
-  tag: PropTypes.string,
-  toggle: PropTypes.bool,
-  appear: PropTypes.bool,
-  onStart: PropTypes.func,
-  onRest: PropTypes.func,
-  config: PropTypes.object,
-  delay: PropTypes.number,
-  changeVisible: PropTypes.bool,
-  className: PropTypes.string,
-  style: PropTypes.object
-};
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -38,20 +15,24 @@ var TransitionBase = function TransitionBase(_ref) {
       from = _ref.from,
       to = _ref.to,
       children = _ref.children,
-      tag = _ref.tag,
-      appear = _ref.appear,
+      _ref$tag = _ref.tag,
+      tag = _ref$tag === void 0 ? 'div' : _ref$tag,
+      _ref$appear = _ref.appear,
+      appear = _ref$appear === void 0 ? true : _ref$appear,
       config = _ref.config,
       delay = _ref.delay,
       mountOnEnter = _ref.mountOnEnter,
       unmountOnExit = _ref.unmountOnExit,
-      changeVisible = _ref.changeVisible,
+      _ref$changeVisible = _ref.changeVisible,
+      changeVisible = _ref$changeVisible === void 0 ? true : _ref$changeVisible,
       style = _ref.style,
       interpolater = _ref.interpolater,
       _onStart = _ref.onStart,
       _onRest = _ref.onRest,
       _ref$reset = _ref.reset,
       reset = _ref$reset === void 0 ? false : _ref$reset,
-      props = _objectWithoutProperties(_ref, ["toggle", "from", "to", "children", "tag", "appear", "config", "delay", "mountOnEnter", "unmountOnExit", "changeVisible", "style", "interpolater", "onStart", "onRest", "reset"]);
+      innerRef = _ref.innerRef,
+      props = _objectWithoutProperties(_ref, ["toggle", "from", "to", "children", "tag", "appear", "config", "delay", "mountOnEnter", "unmountOnExit", "changeVisible", "style", "interpolater", "onStart", "onRest", "reset", "innerRef"]);
 
   var self = useSelf({
     toggle: toggle,
@@ -70,6 +51,18 @@ var TransitionBase = function TransitionBase(_ref) {
       _useState4 = _slicedToArray(_useState3, 2),
       visibility = _useState4[0],
       setVisibility = _useState4[1];
+  /* 将toggle状态映射到self.toggle, 并处理mountOnEnter/unmountOnExit及changeVisible */
+
+
+  useEffect(function () {
+    self.toggle = toggle;
+
+    if (toggle) {
+      setMount(toggle);
+      !unmountOnExit && changeVisible && setVisibility(true);
+    } // eslint-disable-next-line
+
+  }, [toggle]);
 
   var _useSpring = useSpring(function () {
     return {
@@ -81,19 +74,15 @@ var TransitionBase = function TransitionBase(_ref) {
       },
       onRest: function onRest(springProps) {
         _onRest && _onRest(springProps);
-        /* 动画结束且配置了unmountOnExit，移除元素 */
+        /** 除了初次渲染以外的所有toggle为false且设置了unmountOnExit的情况都执行卸载 */
 
-        /* 当初次渲染且设置了mountOnEnter时，阻止渲染 */
-
-        var isFirstMountAndOnEnter = self.count <= 1 && !mountOnEnter;
-
-        if (!self.toggle && unmountOnExit && !isFirstMountAndOnEnter) {
+        if (!self.toggle && unmountOnExit) {
           setMount(false);
         }
-        /* 结束后对设置changeVisible的进行隐藏 */
+        /** 结束后对设置changeVisible的进行隐藏 */
 
 
-        if (!self.toggle && changeVisible) {
+        if (!self.toggle && changeVisible && !unmountOnExit) {
           setVisibility(false);
         }
       }
@@ -129,41 +118,24 @@ var TransitionBase = function TransitionBase(_ref) {
     }
 
     self.count++; // 标记元素动画次数
-    // eslint-disable-next-line
+    // eslint-disable-next-line from to 需要对引用进行memo，防止不必要的触发回调
   }, [from, to, toggle]);
-  /* 将toggle状态映射到self.toggle用于onRest回调内引用, 并处理mountOnEnter/unmountOnExit及changeVisible */
-
-  useEffect(function () {
-    self.toggle = toggle;
-
-    if (toggle) {
-      setMount(toggle);
-      changeVisible && setVisibility(true);
-    } // eslint-disable-next-line
-
-  }, [toggle]); // @ts-ignore
-
   var AnimatedEl = animated[tag];
-  AnimatedEl.displayName = 'TransitionNode';
+  AnimatedEl.displayName = 'TransitionBaseNode';
   /* 存在插值器则先走插值器 */
 
   var springProps = interpolater ? interpolater(springStyle, !!toggle) : springStyle;
-  /* 隐藏 */
+  /* 可见性隐藏 */
 
-  var visibleStyle = changeVisible ? {
-    display: visibility ? '' : 'none'
+  var visibleStyle = changeVisible && !unmountOnExit ? {
+    display: visibility ? undefined : 'none'
   } : {};
-  return mount ? React.createElement(AnimatedEl, Object.assign({}, props, {
-    style: _objectSpread({}, style, {}, springProps, {}, visibleStyle)
+  return mount ? // @ts-ignore
+  React.createElement(AnimatedEl, Object.assign({}, props, {
+    style: _objectSpread({}, style, {}, springProps, {}, visibleStyle),
+    ref: innerRef
   }), typeof children === 'function' ? children(springProps) : children) : null;
 };
-
-TransitionBase.defaultProps = defaultProps;
-TransitionBase.propTypes = _objectSpread({}, propsTypes, {
-  interpolater: PropTypes.func,
-  from: PropTypes.any.isRequired,
-  to: PropTypes.any.isRequired
-});
 
 function ownKeys$1(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -181,8 +153,7 @@ var transitionConfigs = {
     config: _objectSpread$1({}, config.stiff, {
       clamp: true
     }),
-    skipFade: true,
-    changeVisible: true
+    skipFade: true
   },
   zoom: {
     from: {
@@ -198,8 +169,7 @@ var transitionConfigs = {
     },
     to: {
       transform: 'scale3d(1, 1, 1)'
-    },
-    changeVisible: true
+    }
   },
   slideLeft: {
     from: {
@@ -234,45 +204,28 @@ var transitionConfigs = {
     }
   },
   bounce: {
-    to: {
-      x: 1
-    },
     from: {
-      x: 0
+      transform: 'scale3d(0, 0, 0)'
     },
-    skipFade: true,
-    changeVisible: true,
-    interpolater: function interpolater(_ref, toggle) {
-      var x = _ref.x,
-          props = _objectWithoutProperties(_ref, ["x"]);
-
-      var interp = x.interpolate({
-        range: [0, 0.4, 0.6, 0.8, 0.9, 1],
-        output: [0, 1.2, 0.8, 1.1, 0.9, 1]
-      }).interpolate(function (_x) {
-        return "scale3d(".concat(_x, ",").concat(_x, ",").concat(_x, ")");
-      });
-      return _objectSpread$1({}, props, {
-        transform: toggle ? interp : x.interpolate(function (_x) {
-          return "scale3d(".concat(_x, ",").concat(_x, ",").concat(_x, ")");
-        })
-      });
-    }
+    to: {
+      transform: 'scale3d(1, 1, 1)'
+    },
+    config: _objectSpread$1({}, config.wobbly)
   }
 };
 
-var Transition = function Transition(_ref2) {
-  var type = _ref2.type,
-      alpha = _ref2.alpha,
-      props = _objectWithoutProperties(_ref2, ["type", "alpha"]);
+var Transition = function Transition(_ref) {
+  var type = _ref.type,
+      _ref$alpha = _ref.alpha,
+      alpha = _ref$alpha === void 0 ? true : _ref$alpha,
+      props = _objectWithoutProperties(_ref, ["type", "alpha"]);
 
   var _transitionConfigs$ty = transitionConfigs[type],
       from = _transitionConfigs$ty.from,
       to = _transitionConfigs$ty.to,
       interpolater = _transitionConfigs$ty.interpolater,
       config = _transitionConfigs$ty.config,
-      skipFade = _transitionConfigs$ty.skipFade,
-      changeVisible = _transitionConfigs$ty.changeVisible;
+      skipFade = _transitionConfigs$ty.skipFade;
   /* skipFade用于内部配置, alpha配置给用户对fade进行开关 */
 
   if (alpha && !skipFade) {
@@ -286,18 +239,9 @@ var Transition = function Transition(_ref2) {
       config: _objectSpread$1({}, config, {}, props.config),
       from: from,
       to: to,
-      changeVisible: !!changeVisible,
       interpolater: interpolater
     }))
   );
 };
-
-Transition.defaultProps = _objectSpread$1({}, defaultProps, {
-  alpha: true
-});
-Transition.propTypes = _objectSpread$1({}, propsTypes, {
-  type: PropTypes.oneOf(Object.keys(transitionConfigs)).isRequired,
-  alpha: PropTypes.bool
-});
 
 export { Transition, TransitionBase };

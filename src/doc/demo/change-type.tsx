@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TransitionBase, Transition, TransitionTypes } from '../../index';
+import { Transition, TransitionTypes } from '../../index';
 
 const ChangeType = () => {
   const [toggle, setToggle] = React.useState(true);

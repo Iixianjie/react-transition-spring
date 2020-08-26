@@ -1,29 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 
 import { animated, useSpring } from 'react-spring';
 import { useSelf } from '@lxjx/hooks';
 
 import { TransitionBaseProps } from './type';
-import { defaultProps, propsTypes } from './prop-types';
 
 const TransitionBase: React.FC<TransitionBaseProps> = ({
    toggle,
    from,
    to,
    children,
-   tag,
-   appear,
+   tag = 'div',
+   appear = true,
    config,
    delay,
    mountOnEnter,
    unmountOnExit,
-   changeVisible,
+   changeVisible = true,
    style,
    interpolater,
    onStart,
    onRest,
    reset = false,
+   innerRef,
    ...props
  }) => {
   const self = useSelf({
@@ -37,6 +36,17 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
   /* 可见性隐藏 */
   const [visibility, setVisibility] = useState(toggle);
 
+  /* 将toggle状态映射到self.toggle, 并处理mountOnEnter/unmountOnExit及changeVisible */
+  useEffect(() => {
+    self.toggle = toggle;
+
+    if (toggle) {
+      setMount(toggle);
+      !unmountOnExit && changeVisible && setVisibility(true);
+    }
+    // eslint-disable-next-line
+  }, [toggle]);
+
   const [springStyle, set] = useSpring(() => ({
     from,
     config,
@@ -45,17 +55,16 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
       onStart && onStart();
     },
     onRest(springProps) {
-      onRest && onRest(springProps);
-      /* 动画结束且配置了unmountOnExit，移除元素 */
-      /* 当初次渲染且设置了mountOnEnter时，阻止渲染 */
-      const isFirstMountAndOnEnter = self.count <= 1 && !mountOnEnter;
 
-      if (!self.toggle && unmountOnExit && !isFirstMountAndOnEnter) {
+      onRest && onRest(springProps);
+
+      /** 除了初次渲染以外的所有toggle为false且设置了unmountOnExit的情况都执行卸载 */
+      if (!self.toggle && unmountOnExit) {
         setMount(false);
       }
 
-      /* 结束后对设置changeVisible的进行隐藏 */
-      if (!self.toggle && changeVisible) {
+      /** 结束后对设置changeVisible的进行隐藏 */
+      if (!self.toggle && changeVisible && !unmountOnExit) {
         setVisibility(false);
       }
     },
@@ -64,6 +73,7 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
   /* toggle或动画配置变更，更新动画状态 */
   useEffect(() => {
     const isFirst = self.count === 0;
+
     if (toggle) {
       set({
         // @ts-ignore
@@ -77,46 +87,28 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
       // @ts-ignore
       set({ to: from, from: to, immediate: false, delay });
     }
+
     self.count++; // 标记元素动画次数
     // eslint-disable-next-line from to 需要对引用进行memo，防止不必要的触发回调
   }, [from, to, toggle]);
 
-  /* 将toggle状态映射到self.toggle, 并处理mountOnEnter/unmountOnExit及changeVisible */
-  useEffect(() => {
-    self.toggle = toggle;
-    if (toggle) {
-      setMount(toggle);
-      changeVisible && setVisibility(true);
-    }
-    // eslint-disable-next-line
-  }, [toggle]);
-
-  // @ts-ignore
   const AnimatedEl = animated[tag];
-  AnimatedEl.displayName = 'TransitionNode';
+  AnimatedEl.displayName = 'TransitionBaseNode';
 
   /* 存在插值器则先走插值器 */
   const springProps = interpolater ? interpolater(springStyle, !!toggle) : springStyle;
-  /* 隐藏 */
-  const visibleStyle = changeVisible ? { display: visibility ? '' : 'none' } : {};
 
-  return (
-    (mount)
-      ? (
-        <AnimatedEl {...props} style={{ ...style, ...springProps, ...visibleStyle }}>
-          { typeof children === 'function' ? children(springProps) : children }
-        </AnimatedEl>
-      )
-      : null
-  );
-};
+  /* 可见性隐藏 */
+  const visibleStyle = (changeVisible && !unmountOnExit) ? { display: visibility ? undefined : 'none' } : {};
 
-TransitionBase.defaultProps = defaultProps;
-TransitionBase.propTypes = {
-  ...propsTypes,
-  interpolater: PropTypes.func,
-  from: PropTypes.any.isRequired,
-  to: PropTypes.any.isRequired,
+  return mount
+    ? (
+      // @ts-ignore
+      <AnimatedEl { ...props } style={{ ...style, ...springProps, ...visibleStyle }} ref={innerRef}>
+        { typeof children === 'function' ? children(springProps) : children }
+      </AnimatedEl>
+    )
+    : null;
 };
 
 export default TransitionBase;
