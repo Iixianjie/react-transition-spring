@@ -78,10 +78,10 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
       set({ to: from, from: to, immediate: false, delay });
     }
     self.count++; // 标记元素动画次数
-    // eslint-disable-next-line
+    // eslint-disable-next-line from to 需要对引用进行memo，防止不必要的触发回调
   }, [from, to, toggle]);
 
-  /* 将toggle状态映射到self.toggle用于onRest回调内引用, 并处理mountOnEnter/unmountOnExit及changeVisible */
+  /* 将toggle状态映射到self.toggle, 并处理mountOnEnter/unmountOnExit及changeVisible */
   useEffect(() => {
     self.toggle = toggle;
     if (toggle) {
