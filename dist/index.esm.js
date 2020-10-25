@@ -27,7 +27,7 @@ var TransitionBase = function TransitionBase(_ref) {
       changeVisible = _ref$changeVisible === void 0 ? true : _ref$changeVisible,
       style = _ref.style,
       interpolater = _ref.interpolater,
-      _onStart = _ref.onStart,
+      onStart = _ref.onStart,
       _onRest = _ref.onRest,
       _ref$reset = _ref.reset,
       reset = _ref$reset === void 0 ? false : _ref$reset,
@@ -69,9 +69,7 @@ var TransitionBase = function TransitionBase(_ref) {
       from: from,
       config: config,
       reset: reset,
-      onStart: function onStart() {
-        _onStart && _onStart();
-      },
+      onStart: onStart,
       onRest: function onRest(springProps) {
         _onRest && _onRest(springProps);
         /** 除了初次渲染以外的所有toggle为false且设置了unmountOnExit的情况都执行卸载 */
@@ -99,21 +97,23 @@ var TransitionBase = function TransitionBase(_ref) {
 
     if (toggle) {
       set({
-        // @ts-ignore
         to: to,
         from: from,
         delay: delay,
 
         /* 根据appear和self.count判断是否是初次渲染并决定是否启用动画 */
-        immediate: appear ? false : isFirst
+        immediate: appear ? false : isFirst,
+        default: true
       });
     } else {
-      // @ts-ignore
       set({
         to: from,
         from: to,
-        immediate: false,
-        delay: delay
+        delay: delay,
+        immediate: isFirst || false
+        /* 首次加载就为false时，跳过动画 */
+        ,
+        default: true
       });
     }
 
@@ -130,8 +130,7 @@ var TransitionBase = function TransitionBase(_ref) {
   var visibleStyle = changeVisible && !unmountOnExit ? {
     display: visibility ? undefined : 'none'
   } : {};
-  return mount ? // @ts-ignore
-  React.createElement(AnimatedEl, Object.assign({}, props, {
+  return mount ? React.createElement(AnimatedEl, Object.assign({}, props, {
     style: _objectSpread({}, style, {}, springProps, {}, visibleStyle),
     ref: innerRef
   }), typeof children === 'function' ? children(springProps) : children) : null;

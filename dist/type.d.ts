@@ -1,20 +1,20 @@
-import React from 'react';
-import { SpringBaseProps, animated } from 'react-spring';
+import React, { ElementType } from 'react';
+import { UseSpringProps, ControllerProps } from 'react-spring';
 interface Base {
     /** 控制开关动画 */
     toggle?: boolean;
     /** true | 初次加载时是否触发动画 */
     appear?: boolean;
     /** 'div' | 包裹元素的tag类型。(注意当为span等内联元素时transform不会生效，需要将其设置为inner-block) */
-    tag?: keyof typeof animated;
+    tag?: ElementType;
     /** 动画开始前的延迟时间 */
     delay?: number;
     /** react-spring 动画配置 */
-    config?: SpringBaseProps['config'];
+    config?: UseSpringProps['config'];
     /** 所有动画结束后调用, 接收动画结束后的动画值 */
-    onRest?: (transitionArg: any) => void;
-    /** 动画开始, 会在动画运行、初始化期间多次调用，不应该将其作为进行其他操作的依据 */
-    onStart?: () => void;
+    onRest?: ControllerProps['onRest'];
+    /** 动画开始 */
+    onStart?: ControllerProps['onStart'];
     /** false | 默认情况下动画结束后组件依然会保持挂载，设置此属性会在过渡结束后会卸载组件 */
     unmountOnExit?: boolean;
     /** false | 初次渲染时，组件默认会以from状态先加载，为true时，只有在初次触发动画时才会加载组件 */

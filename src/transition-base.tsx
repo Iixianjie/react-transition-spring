@@ -47,16 +47,13 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
     // eslint-disable-next-line
   }, [toggle]);
 
-  const [springStyle, set] = useSpring(() => ({
+  const [springStyle, set] = useSpring<{}>(() => ({
     from,
     config,
     reset,
-    onStart() {
-      onStart && onStart();
-    },
+    onStart,
     onRest(springProps) {
-
-      onRest && onRest(springProps);
+      onRest && (onRest as any)(springProps);
 
       /** 除了初次渲染以外的所有toggle为false且设置了unmountOnExit的情况都执行卸载 */
       if (!self.toggle && unmountOnExit) {
@@ -76,23 +73,22 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
 
     if (toggle) {
       set({
-        // @ts-ignore
         to,
         from,
         delay,
         /* 根据appear和self.count判断是否是初次渲染并决定是否启用动画 */
         immediate: appear ? false : isFirst,
+        default: true
       });
     } else {
-      // @ts-ignore
-      set({ to: from, from: to, immediate: false, delay });
+      set({ to: from, from: to, delay, immediate: isFirst || false /* 首次加载就为false时，跳过动画 */, default: true });
     }
 
     self.count++; // 标记元素动画次数
     // eslint-disable-next-line from to 需要对引用进行memo，防止不必要的触发回调
   }, [from, to, toggle]);
 
-  const AnimatedEl = animated[tag];
+  const AnimatedEl = animated[tag as 'div'];
   AnimatedEl.displayName = 'TransitionBaseNode';
 
   /* 存在插值器则先走插值器 */
@@ -103,7 +99,6 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
 
   return mount
     ? (
-      // @ts-ignore
       <AnimatedEl { ...props } style={{ ...style, ...springProps, ...visibleStyle }} ref={innerRef}>
         { typeof children === 'function' ? children(springProps) : children }
       </AnimatedEl>

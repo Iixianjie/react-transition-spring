@@ -1,5 +1,5 @@
 import React from 'react';
-import { config, SpringBaseProps } from 'react-spring';
+import { config, UseSpringProps } from 'react-spring';
 
 import TransitionBase from './transition-base';
 
@@ -8,7 +8,7 @@ import { TransitionProps } from './type';
 interface TransitionConfigItem {
   from: any;
   to: any;
-  config?: SpringBaseProps['config'];
+  config?: UseSpringProps['config'];
   skipFade?: boolean;
   interpolater?: (styleProps: any, toggle: boolean) => any;
 }

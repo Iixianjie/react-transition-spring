@@ -13,7 +13,20 @@ const Demo = () => {
   return (
     <div style={{ padding: 100 }}>
       <button onClick={() => setShow(!show)}>toggle</button>
-      <TransitionBase tag="div" toggle={show} style={box} to={{ opacity: 1 }} from={{ opacity: 0 }} >
+      <TransitionBase
+        toggle={show}
+        style={box}
+        to={{ opacity: 1 }}
+        from={{ opacity: 0 }}
+        onRest={(v) => {
+          console.log('onRest', v);
+        }}
+        onStart={(v) => {
+          console.log('onStart', v);
+        }}
+        // mountOnEnter
+        unmountOnExit
+      >
         <div>123123</div>
       </TransitionBase>
     </div>
