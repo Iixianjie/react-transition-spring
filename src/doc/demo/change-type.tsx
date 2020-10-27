@@ -17,7 +17,10 @@ const ChangeType = () => {
         toggle={toggle}
         className="box"
         type={type}
-        alpha={false}
+        reset
+        onStart={() => {
+          console.log('start');
+        }}
       >
         {toggle.toString()}
       </Transition>

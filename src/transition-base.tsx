@@ -4,27 +4,28 @@ import { animated, useSpring } from 'react-spring';
 import { useSelf } from '@lxjx/hooks';
 
 import { TransitionBaseProps } from './type';
+import { AnimationResult } from '@react-spring/core';
 
 const TransitionBase: React.FC<TransitionBaseProps> = ({
-   toggle,
-   from,
-   to,
-   children,
-   tag = 'div',
-   appear = true,
-   config,
-   delay,
-   mountOnEnter,
-   unmountOnExit,
-   changeVisible = true,
-   style,
-   interpolater,
-   onStart,
-   onRest,
-   reset = false,
-   innerRef,
-   ...props
- }) => {
+ toggle,
+ from,
+ to,
+ children,
+ tag = 'div',
+ appear = true,
+ config,
+ delay,
+ mountOnEnter,
+ unmountOnExit,
+ changeVisible = true,
+ style,
+ interpolater,
+ onStart,
+ onRest,
+ reset = false,
+ innerRef,
+ ...props
+}) => {
   const self = useSelf({
     toggle,
     count: 0,
@@ -50,22 +51,25 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
   const [springStyle, set] = useSpring<{}>(() => ({
     from,
     config,
-    reset,
     onStart,
-    onRest(springProps) {
-      onRest && (onRest as any)(springProps);
-
-      /** 除了初次渲染以外的所有toggle为false且设置了unmountOnExit的情况都执行卸载 */
-      if (!self.toggle && unmountOnExit) {
-        setMount(false);
-      }
-
-      /** 结束后对设置changeVisible的进行隐藏 */
-      if (!self.toggle && changeVisible && !unmountOnExit) {
-        setVisibility(false);
-      }
-    },
+    default: true,
+    onRest: resetHandler,
   }));
+
+  function resetHandler(springProps: AnimationResult) {
+
+    onRest && (onRest as any)(springProps);
+
+    /** 除了初次渲染以外的所有toggle为false且设置了unmountOnExit的情况都执行卸载 */
+    if (!self.toggle && unmountOnExit) {
+      setMount(false);
+    }
+
+    /** 结束后对设置changeVisible的进行隐藏 */
+    if (!self.toggle && changeVisible && !unmountOnExit) {
+      setVisibility(false);
+    }
+  }
 
   /* toggle或动画配置变更，更新动画状态 */
   useEffect(() => {
@@ -76,12 +80,17 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
         to,
         from,
         delay,
+        reset,
+        onStart,
+        onRest: resetHandler,
         /* 根据appear和self.count判断是否是初次渲染并决定是否启用动画 */
         immediate: appear ? false : isFirst,
-        default: true
+        default: true,
       });
     } else {
-      set({ to: from, from: to, delay, immediate: isFirst || false /* 首次加载就为false时，跳过动画 */, default: true });
+      set({
+        to: from, reset, onStart, onRest: resetHandler, from: to, delay, immediate: isFirst || false /* 首次加载就为false时，跳过动画 */,
+      });
     }
 
     self.count++; // 标记元素动画次数
@@ -99,7 +108,7 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
 
   return mount
     ? (
-      <AnimatedEl { ...props } style={{ ...style, ...springProps, ...visibleStyle }} ref={innerRef}>
+      <AnimatedEl { ...props } style={ { ...style, ...springProps, ...visibleStyle } } ref={ innerRef }>
         { typeof children === 'function' ? children(springProps) : children }
       </AnimatedEl>
     )

@@ -28,6 +28,7 @@ const Demo1: React.FC = () => {
         className="box"
         to={{ transform: 'scale(0)' }}
         from={{ transform: 'scale(1)' }}
+        changeVisible
       >
         zoom
       </TransitionBase>

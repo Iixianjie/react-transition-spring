@@ -8,7 +8,7 @@ const box = {
 }
 
 const Demo = () => {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
 
   return (
     <div style={{ padding: 100 }}>
@@ -25,7 +25,7 @@ const Demo = () => {
           console.log('onStart', v);
         }}
         // mountOnEnter
-        unmountOnExit
+        // unmountOnExit
       >
         <div>123123</div>
       </TransitionBase>

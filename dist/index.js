@@ -154,7 +154,7 @@ var TransitionBase = function TransitionBase(_ref) {
       style = _ref.style,
       interpolater = _ref.interpolater,
       onStart = _ref.onStart,
-      _onRest = _ref.onRest,
+      onRest = _ref.onRest,
       _ref$reset = _ref.reset,
       reset = _ref$reset === void 0 ? false : _ref$reset,
       innerRef = _ref.innerRef,
@@ -194,27 +194,29 @@ var TransitionBase = function TransitionBase(_ref) {
     return {
       from: from,
       config: config,
-      reset: reset,
       onStart: onStart,
-      onRest: function onRest(springProps) {
-        _onRest && _onRest(springProps);
-        /** 除了初次渲染以外的所有toggle为false且设置了unmountOnExit的情况都执行卸载 */
-
-        if (!self.toggle && unmountOnExit) {
-          setMount(false);
-        }
-        /** 结束后对设置changeVisible的进行隐藏 */
-
-
-        if (!self.toggle && changeVisible && !unmountOnExit) {
-          setVisibility(false);
-        }
-      }
+      default: true,
+      onRest: resetHandler
     };
   }),
       _useSpring2 = _slicedToArray(_useSpring, 2),
       springStyle = _useSpring2[0],
       set = _useSpring2[1];
+
+  function resetHandler(springProps) {
+    onRest && onRest(springProps);
+    /** 除了初次渲染以外的所有toggle为false且设置了unmountOnExit的情况都执行卸载 */
+
+    if (!self.toggle && unmountOnExit) {
+      setMount(false);
+    }
+    /** 结束后对设置changeVisible的进行隐藏 */
+
+
+    if (!self.toggle && changeVisible && !unmountOnExit) {
+      setVisibility(false);
+    }
+  }
   /* toggle或动画配置变更，更新动画状态 */
 
 
@@ -226,6 +228,9 @@ var TransitionBase = function TransitionBase(_ref) {
         to: to,
         from: from,
         delay: delay,
+        reset: reset,
+        onStart: onStart,
+        onRest: resetHandler,
 
         /* 根据appear和self.count判断是否是初次渲染并决定是否启用动画 */
         immediate: appear ? false : isFirst,
@@ -234,12 +239,14 @@ var TransitionBase = function TransitionBase(_ref) {
     } else {
       set({
         to: from,
+        reset: reset,
+        onStart: onStart,
+        onRest: resetHandler,
         from: to,
         delay: delay,
         immediate: isFirst || false
         /* 首次加载就为false时，跳过动画 */
-        ,
-        default: true
+
       });
     }
 
