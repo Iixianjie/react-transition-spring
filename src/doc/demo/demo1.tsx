@@ -20,6 +20,7 @@ const Demo1: React.FC = () => {
         className="box"
         to={{ transform: 'translate3d(-100%, 0, 0)' }}
         from={{ transform: 'translate3d(0%, 0, 0)' }}
+        changeVisible={false}
       >
         slideLeft
       </TransitionBase>
@@ -37,6 +38,7 @@ const Demo1: React.FC = () => {
         className="box"
         to={{ number: 0 }}
         from={{ number: 100000 }}
+        changeVisible={false}
       >
         {({ number: number }: any) => number.interpolate((n: any) => n.toFixed(2))}
       </TransitionBase>
