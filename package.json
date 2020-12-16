@@ -1,6 +1,6 @@
 {
   "name": "@lxjx/react-transition-spring",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "react-spring based animation component",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.7.2",
-    "@lxjx/hooks": "^1.15.0",
+    "@lxjx/hooks": "^1.16.3",
     "react-spring": "^9.0.0-rc.3"
   },
   "license": "MIT"
