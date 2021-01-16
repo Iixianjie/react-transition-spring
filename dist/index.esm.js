@@ -1,6 +1,6 @@
 import _objectWithoutProperties from '@babel/runtime/helpers/esm/objectWithoutProperties';
 import _defineProperty from '@babel/runtime/helpers/esm/defineProperty';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSpring, animated, config } from 'react-spring';
 export * from 'react-spring';
 import _slicedToArray from '@babel/runtime/helpers/esm/slicedToArray';
@@ -36,8 +36,16 @@ var TransitionBase = function TransitionBase(_ref) {
 
   var self = useSelf({
     toggle: toggle,
-    count: 0
+    count: 0,
+    unmounted: false
   });
+  /* useSpring的某些回调会在卸载后执行，手动标记卸载防止内存泄漏 */
+
+  useEffect(function () {
+    return function () {
+      return void (self.unmounted = true);
+    };
+  }, []);
   /* 实现mountOnEnter，unmountOnExit接口 */
 
   var _useState = useState(!mountOnEnter),
@@ -58,8 +66,12 @@ var TransitionBase = function TransitionBase(_ref) {
     self.toggle = toggle;
 
     if (toggle) {
-      setMount(toggle);
-      !unmountOnExit && changeVisible && setVisibility(true);
+      ensureMount(function () {
+        return setMount(toggle);
+      });
+      !unmountOnExit && changeVisible && ensureMount(function () {
+        return setVisibility(true);
+      });
     } // eslint-disable-next-line
 
   }, [toggle]);
@@ -82,14 +94,23 @@ var TransitionBase = function TransitionBase(_ref) {
     /** 除了初次渲染以外的所有toggle为false且设置了unmountOnExit的情况都执行卸载 */
 
     if (!self.toggle && unmountOnExit) {
-      setMount(false);
+      ensureMount(function () {
+        return setMount(false);
+      });
     }
     /** 结束后对设置changeVisible的进行隐藏 */
 
 
     if (!self.toggle && changeVisible && !unmountOnExit) {
-      setVisibility(false);
+      ensureMount(function () {
+        return setVisibility(false);
+      });
     }
+  } // 确保执行的状态设置方法所在环境未卸载
+
+
+  function ensureMount(cb) {
+    !self.unmounted && cb();
   }
   /* toggle或动画配置变更，更新动画状态 */
 

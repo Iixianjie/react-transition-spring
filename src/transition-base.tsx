@@ -29,7 +29,11 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
   const self = useSelf({
     toggle,
     count: 0,
+    unmounted: false,
   });
+
+  /* useSpring的某些回调会在卸载后执行，手动标记卸载防止内存泄漏 */
+  useEffect(() => () => void (self.unmounted = true), []);
 
   /* 实现mountOnEnter，unmountOnExit接口 */
   const [mount, setMount] = useState(!mountOnEnter);
@@ -42,8 +46,8 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
     self.toggle = toggle;
 
     if (toggle) {
-      setMount(toggle);
-      !unmountOnExit && changeVisible && setVisibility(true);
+      ensureMount(() => setMount(toggle));
+      !unmountOnExit && changeVisible && ensureMount(() => setVisibility(true));
     }
     // eslint-disable-next-line
   }, [toggle]);
@@ -62,13 +66,18 @@ const TransitionBase: React.FC<TransitionBaseProps> = ({
 
     /** 除了初次渲染以外的所有toggle为false且设置了unmountOnExit的情况都执行卸载 */
     if (!self.toggle && unmountOnExit) {
-      setMount(false);
+      ensureMount(() => setMount(false));
     }
 
     /** 结束后对设置changeVisible的进行隐藏 */
     if (!self.toggle && changeVisible && !unmountOnExit) {
-      setVisibility(false);
+      ensureMount(() => setVisibility(false));
     }
+  }
+
+  // 确保执行的状态设置方法所在环境未卸载
+  function ensureMount(cb: Function) {
+    !self.unmounted && cb();
   }
 
   /* toggle或动画配置变更，更新动画状态 */
